@@ -5,7 +5,7 @@
     
     <entry>
       <title><![CDATA[Github + Hexo 搭建博客]]></title>
-      <url>http://yoursite.com/2017/03/22/Github+Hexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/</url>
+      <url>https://dogorgod.github.io/2017/03/22/Github+Hexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/</url>
       <content type="html"><![CDATA[<h1 id="Github-Hexo-搭建博客"><a href="#Github-Hexo-搭建博客" class="headerlink" title="Github + Hexo 搭建博客"></a>Github + Hexo 搭建博客</h1><h2 id="环境安装"><a href="#环境安装" class="headerlink" title="环境安装"></a>环境安装</h2><ul>
 <li><strong>git安装</strong></li>
 <li><strong>nodejs安装</strong><a id="more"></a>
@@ -64,7 +64,7 @@ hexo d
     
     <entry>
       <title><![CDATA[myfirststep]]></title>
-      <url>http://yoursite.com/2017/03/20/myfirststep/</url>
+      <url>https://dogorgod.github.io/2017/03/20/myfirststep/</url>
       <content type="html"><![CDATA[<h1 id="First-Step-one-more-step"><a href="#First-Step-one-more-step" class="headerlink" title="First Step, one more step"></a>First Step, one more step</h1><h2 id="第一篇博客还是有点激动的呢"><a href="#第一篇博客还是有点激动的呢" class="headerlink" title="第一篇博客还是有点激动的呢"></a>第一篇博客还是有点激动的呢</h2><h2 id="其实这是一段markdown入门小记"><a href="#其实这是一段markdown入门小记" class="headerlink" title="其实这是一段markdown入门小记"></a>其实这是一段markdown入门小记</h2><h3 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h3><h4 id="有序列表"><a href="#有序列表" class="headerlink" title="有序列表"></a>有序列表</h4><p>  直接在文字前加<code>1. 2. 3.</code></p>
 <ol>
 <li>1</li>
@@ -109,14 +109,14 @@ hexo d
     
     <entry>
       <title><![CDATA[about]]></title>
-      <url>http://yoursite.com/about/index.html</url>
+      <url>https://dogorgod.github.io/about/index.html</url>
       <content type="html"><![CDATA[<p>Like a dog, like a god!</p>
 ]]></content>
     </entry>
     
     <entry>
       <title><![CDATA[标签]]></title>
-      <url>http://yoursite.com/tags/index.html</url>
+      <url>https://dogorgod.github.io/tags/index.html</url>
       <content type="html"></content>
     </entry>
     
