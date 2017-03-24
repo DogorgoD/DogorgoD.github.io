@@ -4,6 +4,146 @@
   
     
     <entry>
+      <title><![CDATA[SSH 免密连接]]></title>
+      <url>https://dogorgod.github.io/2017/03/24/SSH-%E5%85%8D%E5%AF%86%E8%BF%9E%E6%8E%A5/</url>
+      <content type="html"><![CDATA[<h1 id="SSH-免密连接"><a href="#SSH-免密连接" class="headerlink" title="SSH 免密连接"></a>SSH 免密连接</h1><h2 id="什么是SSH？"><a href="#什么是SSH？" class="headerlink" title="什么是SSH？"></a>什么是SSH？</h2><p>&emsp; 简单说，SSH是一种网络协议，用于计算机之间的加密登录。<br>如果一个用户从本地计算机，使用SSH协议登录另一台远程计算机，我们就可以认为，这种登录是安全的（所以叫 Secure Shell 啊），即使被中途截获，密码也不会泄露。<br><a id="more"></a><br>&emsp; 比如在Windows端常用的有SSH工具有PuTTy,但是个人觉得界面太丑，果断还是MobaXterm好用又美观。Linux 一般自带的是OpenSSH,可以通过ssh -V 查看版本。在Andriod 端好用的有JuiceSSH。</p>
+<h2 id="基本的用法"><a href="#基本的用法" class="headerlink" title="基本的用法"></a>基本的用法</h2><p>SSH主要用于远程登录。假定你要以用户名user，登录远程主机host，只要一条简单命令就可以了。</p>
+<pre><code>$ ssh user@host
+</code></pre><p>如果本地用户名与远程用户名一致，登录时可以省略用户名。</p>
+<pre><code>$ ssh host
+</code></pre><p>SSH的默认端口是22，也就是说，你的登录请求会送进远程主机的22端口。使用p参数，可以修改这个端口。</p>
+<pre><code>$ ssh -p 2222 user@host
+</code></pre><h2 id="免密登陆"><a href="#免密登陆" class="headerlink" title="免密登陆"></a>免密登陆</h2><p><strong>目标主机</strong>  ubuntu 16.04</p>
+<p><strong>本地主机</strong>  Windows</p>
+<p>在本地主机打开git shell</p>
+<pre><code>ssh-keygen - t rsa  
+</code></pre><p>生成公共(id_rsa.pub) / 私有 rsa（id_rsa） 密钥对</p>
+<p>复制公钥到目标服务器，然后就可以无密码登录了</p>
+<pre><code>ssh-copy-id hexo@服务器IP
+</code></pre><p>这固然方便，但是网上教程中在ssh-keygen创建密钥的时候，</p>
+<p>“Enter passphrase (empty for no passphrase):”</p>
+<p>和下一行</p>
+<p>“Enter same passphrase again:”</p>
+<p>两处都是直接回车，就是说没有创建口令短语（passphrase）。</p>
+<h2 id="使用口令短语"><a href="#使用口令短语" class="headerlink" title="使用口令短语"></a>使用口令短语</h2><p>我们把目标主机的 /root/.ssh/authorized_keys 移走，在操作主机上 重新 生成一对儿密钥，这回加上口令短语（至少5个字符），再ssh-copy-id 到目标主机，试试连接：</p>
+<pre><code>[root@centos7-cn ~]# ssh root@192.168.150.110
+Enter passphrase for key &apos;/root/.ssh/id_rsa&apos;: &lt;输入正确的口令短语&gt;
+Last login: Tue Oct 28 11:46:56 2014 from 192.168.150.76
+[root@centos7 ~]#
+</code></pre><p>必须输入正确的口令短语才能登录目标主机。</p>
+<h2 id="增加口令短语"><a href="#增加口令短语" class="headerlink" title="增加口令短语"></a>增加口令短语</h2><p>那么在生产环境里，已经部署了不带口令短语的密钥，怎么增加口令短语呢？这样</p>
+<pre><code>[root@centos7-cn ~]# ssh-keygen -p
+Enter file in which the key is (/root/.ssh/id_rsa):
+Key has comment &apos;/root/.ssh/id_rsa&apos;
+Enter new passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved with the new passphrase.
+</code></pre><p>这时候再试试连接目标主机，除了需要输入口令短语，登录服务器依旧不需要密码。</p>
+<p>但是仅仅增加口令短语并不能解决问题，因为改动的是操作主机上的id_rsa文件（私钥），目标主机上保存的是毫无变化的公钥，原来未加口令的私钥依然有效！！</p>
+<p>所以没有办法了， 增加口令没有太多实际意义 。必须删除目标主机原有的公钥（保存在目标主机的 /root/.ssh/authorized_keys），删除操作主机旧的密钥并重新生成一套带口令的，再ssh-copy-id到目标主机。这可能是个浩大的工程。。。</p>
+<p>ssh-keygen -p 选项也可以修改口令短语，只是在输入新口令之前需要先输入旧口令。</p>
+<h2 id="dog-god说"><a href="#dog-god说" class="headerlink" title="dog/god说"></a>dog/god说</h2><p>之前折腾了好久也没有弄清楚目标主机和本地主机的关系，仔细看了下ssh的原理终于实现了免密登陆，这下部署博客就很简单了。出现问题时，不要着急立刻解决还是去了解下背后的原理，再操作比较有效率。</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> SSH </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[服务器部署Hexo博客]]></title>
+      <url>https://dogorgod.github.io/2017/03/24/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2Hexo%E5%8D%9A%E5%AE%A2/</url>
+      <content type="html"><![CDATA[<h1 id="服务器部署Hexo博客"><a href="#服务器部署Hexo博客" class="headerlink" title="服务器部署Hexo博客"></a>服务器部署Hexo博客</h1><h2 id="dog-god说"><a href="#dog-god说" class="headerlink" title="dog/god说"></a>dog/god说</h2><p>最近真是沉迷博客无法自拔啊…在党员丁的“一块钱你买不到。。。”的理论感化下，入坑了腾讯云，顺便买了个.cn的域名（网站备案好繁琐啊）。言归正传，又花了两天把原来部署在github上的博客部署到服务器上，真是折腾了好久，遇到了各种谜之问题。写下安装步骤以防遗忘和以后可能的修复博客。<br><a id="more"></a></p>
+<h2 id="本地安装Hexo"><a href="#本地安装Hexo" class="headerlink" title="本地安装Hexo"></a>本地安装Hexo</h2><ul>
+<li><p>Windows下安装nodejs和它的包管理器npm以及git</p>
+</li>
+<li><p>安装Hexo<br>  npm install hexo -g</p>
+</li>
+<li><p>初始化hexo<br>  cd D:/blog<br>  hexo init</p>
+</li>
+</ul>
+<h2 id="服务器配置"><a href="#服务器配置" class="headerlink" title="服务器配置"></a>服务器配置</h2><h3 id="创建专用的用户"><a href="#创建专用的用户" class="headerlink" title="创建专用的用户"></a>创建专用的用户</h3><ul>
+<li>添加用户<br>  useradd -m hexo</li>
+<li>赋予sudo权限<br>  vim /etc/sudoers</li>
+</ul>
+<p>&emsp; 修改片段如下</p>
+<pre><code>## Allowroot to run any comment anywhere
+root    ALL=(ALL)    ALL
+hexo    ALL=(ALL)    ALL
+</code></pre><h3 id="创建部署静态文件的Git仓库"><a href="#创建部署静态文件的Git仓库" class="headerlink" title="创建部署静态文件的Git仓库"></a>创建部署静态文件的Git仓库</h3><p>&emsp; 创建/var/repo 目录，然后修改所有权和用户权限,之后 ubuntu 用户都具备 /var/repo 目录下所有新生成的目录和文件的权限。</p>
+<pre><code>sudo mkdir /var/repo/
+sudo chown -R $USER:$USER /var/repo/
+sudo chmod -R 755 /var/repo/
+</code></pre><p>&emsp; 初始化git仓库，生成.git<br>    cd /var/repo<br>    git –bare hexo_static.git</p>
+<h3 id="配置Apache-Nginx-托管文件目录"><a href="#配置Apache-Nginx-托管文件目录" class="headerlink" title="配置Apache/Nginx 托管文件目录"></a>配置Apache/Nginx 托管文件目录</h3><p>&emsp; Apache或者Nginx都可以，因为之前用的Nginx配置的，发现明明部署成功，网页却无法显示，怀疑Nginx有问题，于是换了Apache，结果是愚蠢的我没有把服务器的80端口打开…</p>
+<ul>
+<li><p>创建/var/www/hexo，用于托管，同时修改所有权和权限</p>
+<pre><code>sudo mkdir -p /var/www/hexo
+</code></pre></li>
+<li><p>配置Apache</p>
+<pre><code>sudo apt-get install apache2
+</code></pre></li>
+</ul>
+<p>&emsp; 修改网站的默认根目录为/var/www/hexo</p>
+<pre><code>sudo vi /etc/apache2/sites-available/000-default.conf
+ServerAdmin webmaster@localhost
+DocumentRoot /var/www/hexo #修改的地方
+</code></pre><p>&emsp; 重启Apache使之生效</p>
+<pre><code>sudo /etc/init.d/apache2 restart
+</code></pre><ul>
+<li><p>配置Nginx</p>
+<pre><code>sudo apt-get install nginx
+</code></pre></li>
+</ul>
+<p>&emsp; 修改 Nginx 的 default 设置</p>
+<pre><code>sudo vim /etc/nginx/sites-available/default
+</code></pre><p>&emsp; 将其中的 root 指令指向 /var/www/hexo 目录</p>
+<pre><code>root /var/www/hexo;        
+</code></pre><p>&emsp; 重启Nginx使之生效</p>
+<pre><code>sudo service nginx restart
+</code></pre><h3 id="创建Git-hooks"><a href="#创建Git-hooks" class="headerlink" title="创建Git hooks"></a>创建Git hooks</h3><p>&emsp; 接下来，在服务器上的裸仓库 hexo_static 创建一个钩子，在满足特定条件时将静态 HTML 文件传送到 Web 服务器的目录下，即 /var/www/hexo。在自动生成的 hooks 目录下创建一个新的钩子文件：</p>
+<pre><code>vim /var/repo/hexo_static.git/hooks/post-receive
+</code></pre><p>&emsp; 在该文件中添加两行代码，指定 Git 的工作树（源代码）和 Git 目录（配置文件等）。</p>
+<pre><code>#!/bin/bash
+git --work-tree=/var/www/hexo --git-dir=/var/repo/hexo_static.git checkout -f
+</code></pre><p>&emsp; 保存并退出文件，并让该文件变为可执行文件。</p>
+<pre><code>chmod +x /var/repo/hexo_static.git/hooks/post-receive
+</code></pre><h2 id="本地Hexo创建博客及部署"><a href="#本地Hexo创建博客及部署" class="headerlink" title="本地Hexo创建博客及部署"></a>本地Hexo创建博客及部署</h2><h3 id="修改-Hexo-配置中的-URL-和默认文章版式"><a href="#修改-Hexo-配置中的-URL-和默认文章版式" class="headerlink" title="修改 Hexo 配置中的 URL 和默认文章版式"></a>修改 Hexo 配置中的 URL 和默认文章版式</h3><p>&emsp; 修改URL 和 Deployment目录下的type等</p>
+<pre><code>url: http://服务器IP
+
+# Deployment
+## Docs: https://hexo.io/docs/deployment.html
+deploy:
+  type: git
+  repo: hexo@服务器IP:/var/repo/hexo_static
+  branch: master
+</code></pre><h3 id="新建博客并发布"><a href="#新建博客并发布" class="headerlink" title="新建博客并发布"></a>新建博客并发布</h3><p>&emsp; 先需要安装一个hexo包</p>
+<pre><code>npm install hexo-deployer-git --save
+
+hexo n &quot;文章名&quot;
+hexo clean
+hexo g
+hexo d
+</code></pre><p>&emsp; 在部署时需要设置SSH免密登陆，我留到下一篇博客专门讲解SSH。</p>
+<p>打开浏览器输入IP就可以查看博客了。</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> Hexo </tag>
+            
+            <tag> Server </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Github + Hexo 搭建博客]]></title>
       <url>https://dogorgod.github.io/2017/03/22/Github+Hexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/</url>
       <content type="html"><![CDATA[<h1 id="Github-Hexo-搭建博客"><a href="#Github-Hexo-搭建博客" class="headerlink" title="Github + Hexo 搭建博客"></a>Github + Hexo 搭建博客</h1><h2 id="环境安装"><a href="#环境安装" class="headerlink" title="环境安装"></a>环境安装</h2><ul>
@@ -48,6 +188,38 @@ hexo s
 hexo g
 hexo d
 </code></pre><p>完成上述步骤即可部署博客</p>
+<h2 id="修补yilla缺失模块"><a href="#修补yilla缺失模块" class="headerlink" title="修补yilla缺失模块"></a>修补yilla缺失模块</h2><ul>
+<li><p>先安装hexo包</p>
+<p>   npm i hexo-generator-json-content –save</p>
+</li>
+<li><p>在根目录.-config.yml添加代码段</p>
+<p>  jsonContent:<br>  meta: false<br>  pages: false<br>  posts:</p>
+<pre><code>title: true
+date: true
+path: true
+text: true
+raw: false
+content: false
+slug: false
+updated: false
+comments: false
+link: false
+permalink: false
+excerpt: false
+categories: false
+tags: true
+</code></pre></li>
+</ul>
+<h2 id="yelee主题添加搜索框"><a href="#yelee主题添加搜索框" class="headerlink" title="yelee主题添加搜索框"></a>yelee主题添加搜索框</h2><ul>
+<li><p>先安装hexo包</p>
+<p>   npm install  –save hexo-generator-search</p>
+</li>
+<li><p>在根目录.-config.yml添加代码段</p>
+<pre><code>search:
+  path: search.xml
+  field: all
+</code></pre></li>
+</ul>
 <h2 id="dog-god说"><a href="#dog-god说" class="headerlink" title="dog/god说"></a>dog/god说</h2><p>&emsp;使用github和hexo搭建博客的过程本身是挺有意思的，遇到了各种各样的问题，但是过程中也熟悉了git，node.js，也锻炼了对markdown的进阶使用。博客还在熟悉中。To be continued…</p>
 ]]></content>
       
@@ -65,7 +237,8 @@ hexo d
     <entry>
       <title><![CDATA[myfirststep]]></title>
       <url>https://dogorgod.github.io/2017/03/20/myfirststep/</url>
-      <content type="html"><![CDATA[<h1 id="First-Step-one-more-step"><a href="#First-Step-one-more-step" class="headerlink" title="First Step, one more step"></a>First Step, one more step</h1><h2 id="第一篇博客还是有点激动的呢"><a href="#第一篇博客还是有点激动的呢" class="headerlink" title="第一篇博客还是有点激动的呢"></a>第一篇博客还是有点激动的呢</h2><h2 id="其实这是一段markdown入门小记"><a href="#其实这是一段markdown入门小记" class="headerlink" title="其实这是一段markdown入门小记"></a>其实这是一段markdown入门小记</h2><h3 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h3><h4 id="有序列表"><a href="#有序列表" class="headerlink" title="有序列表"></a>有序列表</h4><p>  直接在文字前加<code>1. 2. 3.</code></p>
+      <content type="html"><![CDATA[<h1 id="First-Step-one-more-step"><a href="#First-Step-one-more-step" class="headerlink" title="First Step, one more step"></a>First Step, one more step</h1><h2 id="第一篇博客还是有点激动的呢"><a href="#第一篇博客还是有点激动的呢" class="headerlink" title="第一篇博客还是有点激动的呢"></a>第一篇博客还是有点激动的呢</h2><h2 id="其实这是一段markdown入门小记"><a href="#其实这是一段markdown入门小记" class="headerlink" title="其实这是一段markdown入门小记"></a>其实这是一段markdown入门小记</h2><a id="more"></a>
+<h3 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h3><h4 id="有序列表"><a href="#有序列表" class="headerlink" title="有序列表"></a>有序列表</h4><p>  直接在文字前加<code>1. 2. 3.</code></p>
 <ol>
 <li>1</li>
 <li>2</li>
@@ -80,7 +253,7 @@ hexo d
 <blockquote>
 <p>sqrt</p>
 </blockquote>
-<p>要注意符号和文本间的空格<br><a id="more"></a></p>
+<p>要注意符号和文本间的空格<br><!-- more --></p>
 <h3 id="插入一个链接"><a href="#插入一个链接" class="headerlink" title="插入一个链接"></a>插入一个链接</h3><p><a href="http://www.baidu.com" target="_blank" rel="external">百度</a></p>
 <h3 id="插入图片"><a href="#插入图片" class="headerlink" title="插入图片"></a>插入图片</h3><p><img src="http://mouapp/com/Mou_128.png" alt="Mou_icon"></p>
 <p><strong>这是粗体</strong><br><em>这是斜体</em></p>
