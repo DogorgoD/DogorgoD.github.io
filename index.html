@@ -298,55 +298,8 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <h1 id="二叉树打印"><a href="#二叉树打印" class="headerlink" title="二叉树打印"></a>二叉树打印</h1><p>有一棵二叉树，请设计一个算法，按照层次打印这棵二叉树。<br>给定二叉树的根结点root，请返回打印结果，结果按照每一层一个数组进行储存，所有数组的顺序按照层数从上往下，且每一层的数组内元素按照从左往右排列。保证结点数小于等于500。</p>
-<p><img src="/imgs/二叉树按层打印-0.jpg" alt="&quot;二叉树按层打印-0&quot;"></p>
-<p><img src="/imgs/二叉树按层打印-1.jpg" alt="&quot;二叉树按层打印-1&quot;">    </p>
-<p><img src="/imgs/二叉树按层打印-2.jpg" alt="&quot;二叉树按层打印-2&quot;">    </p>
-<pre><code>/*
-struct TreeNode {
-    int val;
-    struct TreeNode *left;
-    struct TreeNode *right;
-    TreeNode(int x) :
-            val(x), left(NULL), right(NULL) {
-    }
-};*/
-
-class TreePrinter {
-public:
-    vector&lt;vector&lt;int&gt; &gt; printTree(TreeNode* root) {
-        // write code here
-        TreeNode *last,*nlast,*current;
-        vector&lt;int&gt; row;
-        vector&lt; vector&lt;int&gt;&gt; res;
-        queue&lt;TreeNode*&gt; q;
-        last=root;
-        nlast=root;
-        q.push(root);
-        while (!q.empty())
-        {
-            current=q.front();
-            if(current-&gt;left){
-                q.push(current-&gt;left);
-                nlast=current-&gt;left;
-            }
-            if(current-&gt;right){
-                q.push(current-&gt;right);
-                nlast=current-&gt;right;
-            }
-
-            row.push_back(current-&gt;val);
-             if(last==current){
-                last=nlast;
-                res.push_back(row);
-                row.clear();
-            }
-            q.pop();
-        }
-        return res;
-    }
-};
-</code></pre>
+              <h1 id="二叉树打印"><a href="#二叉树打印" class="headerlink" title="二叉树打印"></a>二叉树打印</h1><p>有一棵二叉树，请设计一个算法，按照层次打印这棵二叉树。<br>给定二叉树的根结点root，请返回打印结果，结果按照每一层一个数组进行储存，所有数组的顺序按照层数从上往下，且每一层的数组内元素按照从左往右排列。保证结点数小于等于500。</p>
+          
       
     </div>
     
@@ -359,6 +312,10 @@ public:
         <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/二叉树/">二叉树</a></li></ul>
     </div>
 
+      
+        <p class="article-more-link">
+          <a href="/2017/03/27/二叉树打印/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>

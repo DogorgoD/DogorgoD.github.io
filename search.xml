@@ -7,6 +7,7 @@
       <title><![CDATA[二叉树打印]]></title>
       <url>https://dogorgod.github.io/2017/03/27/%E4%BA%8C%E5%8F%89%E6%A0%91%E6%89%93%E5%8D%B0/</url>
       <content type="html"><![CDATA[<h1 id="二叉树打印"><a href="#二叉树打印" class="headerlink" title="二叉树打印"></a>二叉树打印</h1><p>有一棵二叉树，请设计一个算法，按照层次打印这棵二叉树。<br>给定二叉树的根结点root，请返回打印结果，结果按照每一层一个数组进行储存，所有数组的顺序按照层数从上往下，且每一层的数组内元素按照从左往右排列。保证结点数小于等于500。</p>
+<a id="more"></a>
 <p><img src="/imgs/二叉树按层打印-0.jpg" alt="&quot;二叉树按层打印-0&quot;"></p>
 <p><img src="/imgs/二叉树按层打印-1.jpg" alt="&quot;二叉树按层打印-1&quot;">    </p>
 <p><img src="/imgs/二叉树按层打印-2.jpg" alt="&quot;二叉树按层打印-2&quot;">    </p>
