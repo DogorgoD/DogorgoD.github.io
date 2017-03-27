@@ -343,16 +343,16 @@ tags: true
   
     
     <entry>
+      <title><![CDATA[标签]]></title>
+      <url>https://dogorgod.github.io/tags/index.html</url>
+      <content type="html"></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[about]]></title>
       <url>https://dogorgod.github.io/about/index.html</url>
       <content type="html"><![CDATA[<p>Like a dog, like a god!</p>
 ]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[标签]]></title>
-      <url>https://dogorgod.github.io/tags/index.html</url>
-      <content type="html"></content>
     </entry>
     
   
