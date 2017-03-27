@@ -27,7 +27,7 @@ make gconfig(GUI方式，但需要库支持，Gnome下使用)
 <li>make modules_install 安装这些模块</li>
 <li>最后make install 进行安装</li>
 </ul>
-<p>！<a href="/imgs/内核.jpg">“重启结果”</a></p>
+<p><img src="/imgs/内核.jpg" alt="&quot;重启结果&quot;"></p>
 <ul>
 <li><p><strong>在实验过程中遇到的问题以及解决方法：</strong></p>
 <ol>
