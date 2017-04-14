@@ -4,6 +4,56 @@
   
     
     <entry>
+      <title><![CDATA[Linux 内核模块编程]]></title>
+      <url>https://dogorgod.github.io/2017/03/29/Linux-%E5%86%85%E6%A0%B8%E6%A8%A1%E5%9D%97%E7%BC%96%E7%A8%8B/</url>
+      <content type="html"><![CDATA[<h1 id="Linux-内核模块编程"><a href="#Linux-内核模块编程" class="headerlink" title="Linux 内核模块编程"></a>Linux 内核模块编程</h1><h2 id="简单内核模块的编写"><a href="#简单内核模块的编写" class="headerlink" title="简单内核模块的编写"></a>简单内核模块的编写</h2><pre><code>#include  &lt;linux/kernel.h&gt;     // 在内核模块中共享                                                                                    
+#include  &lt;linux/module.h&gt;    // 一个模块                                                                                                     
+
+int init_module()          //初始化模块                                                                                                                            
+{                                                                                                                                                                            
+   printk(“Hello! This is a testing module! \n”)；                                                                               
+   return 0；                                                                                           
+}         
+
+void cleanup_module()                                                                                                                          
+{                                                                                                           
+   printk(“Sorry! The testing module is unloading now! \n”)；                                                                                 
+}       
+</code></pre><h2 id="Makefile文件编写"><a href="#Makefile文件编写" class="headerlink" title="Makefile文件编写"></a>Makefile文件编写</h2><pre><code>obj-m += testmodule.o
+
+KDIR =/usr/src/kernels/$(shell uname -r)/
+
+all:
+    $(MAKE) -C $(KDIR) SUBDIRS=$(PWD) modules
+
+clean:
+    rm -rf *.o *.ko *.mod.* *.symvers *.order
+</code></pre><h2 id="内核模块编写"><a href="#内核模块编写" class="headerlink" title="内核模块编写"></a>内核模块编写</h2><pre><code>$ sudo insmod hello.ko
+$ dmesg                   ==&gt; u will get the output
+</code></pre><p><img src="/imgs/内核模块编程-1.jpg" alt="&quot;装载内核模块&quot;"></p>
+<pre><code>$ sudo rmmod hello
+$ dmesg
+</code></pre><p><img src="/imgs/内核模块编程-2.jpg" alt="&quot;卸载内核模块&quot;"></p>
+<h2 id="模块描述信息"><a href="#模块描述信息" class="headerlink" title="模块描述信息"></a>模块描述信息</h2><p>使用modinfo查看一个模块的模块信息</p>
+<pre><code>[luo@localhost testmodule]$ modinfo testmodule.ko
+filename:       /home/luo/os_exec2/testmodule/testmodule.ko
+rhelversion:    7.3
+srcversion:     9099367E555C4E8B9DE8D54
+depends:        
+vermagic:       3.10.0-514.10.2.el7.x86_64 SMP mod_unload modversions 
+</code></pre><p><img src="/imgs/内核模块编程-3.jpg" alt="&quot;查看内核模块信息&quot;"></p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[二叉树打印]]></title>
       <url>https://dogorgod.github.io/2017/03/27/%E4%BA%8C%E5%8F%89%E6%A0%91%E6%89%93%E5%8D%B0/</url>
       <content type="html"><![CDATA[<h1 id="二叉树打印"><a href="#二叉树打印" class="headerlink" title="二叉树打印"></a>二叉树打印</h1><p>有一棵二叉树，请设计一个算法，按照层次打印这棵二叉树。<br>给定二叉树的根结点root，请返回打印结果，结果按照每一层一个数组进行储存，所有数组的顺序按照层数从上往下，且每一层的数组内元素按照从左往右排列。保证结点数小于等于500。</p>
